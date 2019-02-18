@@ -2,16 +2,18 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Count></Count>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-
+import Count from './components/count.vue'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    Count
   }
 }
 </script>
