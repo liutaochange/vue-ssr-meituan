@@ -1,7 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
-const store = new Vuex.Store({
+const store = {
+  namespaced: true,
   state: {
     count: 0
   },
@@ -21,5 +19,5 @@ const store = new Vuex.Store({
       commit('decrement')
     }
   }
-})
+}
 export default store
