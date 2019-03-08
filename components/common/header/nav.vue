@@ -65,7 +65,7 @@
           <dl class="app">
             <dt>手机应用</dt>
             <dd>
-              <a href="#">
+              <a href="">
                 <img
                   src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/appicons/meituan.png"
                   title="美团app"
@@ -73,7 +73,7 @@
               </a>
             </dd>
             <dd>
-              <a href="#">
+              <a href="">
                 <img
                   src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/appicons/meituan.png"
                   title="美团app"
@@ -81,7 +81,7 @@
               </a>
             </dd>
             <dd>
-              <a href="#">
+              <a href="">
                 <img
                   src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/appicons/meituan.png"
                   title="美团app"
@@ -89,7 +89,7 @@
               </a>
             </dd>
             <dd>
-              <a href="#">
+              <a href="">
                 <img
                   src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/appicons/meituan.png"
                   title="美团app"
@@ -97,7 +97,7 @@
               </a>
             </dd>
             <dd>
-              <a href="#">
+              <a href="">
                 <img
                   src="//s0.meituan.net/bs/fe-web-meituan/e5eeaef/img/appicons/meituan.png"
                   title="美团app"

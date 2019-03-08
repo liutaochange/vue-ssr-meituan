@@ -12,13 +12,13 @@
   </el-container>
 </template>
 <script>
-import MyHeader from "@/components/common/header/index.vue"
+import MyHeader from "@/components/common/header/index.vue";
 // import MyFooter from "@/components/common/footer/index.vue"
 export default {
   components: {
-    MyHeader,
+    MyHeader
     // MyFooter
   }
-}
+};
 </script>
 

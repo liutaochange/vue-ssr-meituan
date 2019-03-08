@@ -14,16 +14,16 @@
 </template>
 
 <script>
-import topBar from './topbar.vue'
-import searchBar from './searchbar.vue'
+import topBar from "./topbar.vue";
+import searchBar from "./searchbar.vue";
 export default {
-  components:{
+  components: {
     topBar,
     searchBar
   }
-}
+};
 </script>
 
 <style lang="scss">
-  @import "@/assets/css/public/header/index.scss";
+@import "@/assets/css/public/header/index.scss";
 </style>
