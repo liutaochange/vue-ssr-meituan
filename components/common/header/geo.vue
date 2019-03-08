@@ -8,11 +8,3 @@
     [香河 廊坊 天津 固安县]
   </div>
 </template>
-
-<script>
-export default {
-}
-</script>
-
-<style lang="css">
-</style>
