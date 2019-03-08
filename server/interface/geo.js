@@ -4,6 +4,7 @@ import Province from '../mongoose/models/province'
 
 let router = new Router({prefix: '/geo'})
 
+// 获取签名的地址： http://cp-tools.cn/sign
 const sign = 'abcd';
 
 router.get('/getPosition', async (ctx) => {
