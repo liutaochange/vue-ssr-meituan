@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import axios from './utils/axios'
-import Province from '../mongoose/models/province'
 
 let router = new Router({prefix: '/geo'})
 
