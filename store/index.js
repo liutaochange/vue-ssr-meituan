@@ -1,5 +1,5 @@
 export const actions = {
-  async nuxtServerInit({ commit }, { req, app }) {
+  getData: async({ commit }, { req, app }) => {
     const {
       status,
       data: { province, city }
@@ -8,11 +8,11 @@ export const actions = {
       "geo/setPosition",
       status === 200 ? { city, province } : { city: "", province: "" }
     );
-    const {
-      status: status2,
-      data: { menu }
-    } = await app.$axios.get("geo/menu");
-    commit("home/setMenu", status2 === 200 ? menu : []);
+    // const {
+    //   status: status2,
+    //   data: { menu }
+    // } = await app.$axios.get("geo/menu");
+    // commit("home/setMenu", status2 === 200 ? menu : []);
     // const {
     //   status: status3,
     //   data: { result }
