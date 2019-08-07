@@ -1,6 +1,6 @@
-const state = () => ({menu: [], hotPlace: []})
+export const state = () => ({menu: [], hotPlace: []})
 
-const mutations = {
+export const mutations = {
   setMenu(state, val) {
     state.menu = val
   },
@@ -9,7 +9,7 @@ const mutations = {
   }
 }
 
-const actions = {
+export const actions = {
   setMenu: ({
     commit
   }, menu) => {
@@ -22,4 +22,3 @@ const actions = {
   }
 }
 
-export default {namespaced: true, state, mutations, actions}
