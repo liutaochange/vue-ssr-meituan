@@ -106,8 +106,8 @@ const setupProgress = (axios, ctx) => {
 export default (ctx, inject) => {
   // baseURL
   const baseURL = process.browser
-      ? 'http://localhost:3000/'
-      : (process.env._AXIOS_BASE_URL_ || 'http://localhost:3000/')
+      ? 'http://127.0.0.1:3000/'
+      : (process.env._AXIOS_BASE_URL_ || 'http://127.0.0.1:3000/')
 
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
@@ -135,11 +135,10 @@ export default (ctx, inject) => {
   delete axiosOptions.headers.common['host']
   delete axiosOptions.headers.common['cf-ray']
   delete axiosOptions.headers.common['cf-connecting-ip']
-  delete axiosOptions.headers.common['content-length']
 
   if (process.server) {
     // Don't accept brotli encoding because Node can't parse it
-    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'
+    axiosOptions.headers.common['Accept-Encoding'] = 'gzip, deflate'
   }
 
   // Create new axios instance

@@ -1,8 +1,13 @@
 import Koa from 'koa'
 import consola from 'consola'
+import bodyParser from 'koa-bodyparser'
 import { Nuxt, Builder } from 'nuxt'
-
+import search from './interface/search'
 const app = new Koa()
+
+app.use(bodyParser({
+  extendTypes:['json','form','text']
+}))
 
 // Import and Set Nuxt.js options
 import config from '../nuxt.config.js'
@@ -24,7 +29,7 @@ async function start() {
   } else {
     await nuxt.ready()
   }
-
+  app.use(search.routes()).use(search.allowedMethods())
   app.use(ctx => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling

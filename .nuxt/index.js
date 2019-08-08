@@ -11,8 +11,8 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_axios_0778805e from 'nuxt_plugin_axios_0778805e' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_elementui_d905880e from 'nuxt_plugin_elementui_d905880e' // Source: ../plugins/element-ui (mode: 'all')
+import nuxt_plugin_axios_c793e898 from 'nuxt_plugin_axios_c793e898' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_elementui_d905880e from 'nuxt_plugin_elementui_d905880e' // Source: ..\\plugins\\element-ui (mode: 'all')
 
 // Component: <NoSsr>
 Vue.component(NoSsr.name, NoSsr)
@@ -78,7 +78,7 @@ async function createApp(ssrContext) {
       dateErr: null,
       error(err) {
         err = err || null
-        app.context._errored = Boolean(err)
+        app.context._errored = !!err
         err = err ? normalizeError(err) : null
         const nuxt = this.nuxt || this.$options.nuxt
         nuxt.dateErr = Date.now()
@@ -113,8 +113,7 @@ async function createApp(ssrContext) {
     payload: ssrContext ? ssrContext.payload : undefined,
     req: ssrContext ? ssrContext.req : undefined,
     res: ssrContext ? ssrContext.res : undefined,
-    beforeRenderFns: ssrContext ? ssrContext.beforeRenderFns : undefined,
-    ssrContext
+    beforeRenderFns: ssrContext ? ssrContext.beforeRenderFns : undefined
   })
 
   const inject = function (key, value) {
@@ -152,13 +151,8 @@ async function createApp(ssrContext) {
 
   // Plugin execution
 
-  if (typeof nuxt_plugin_axios_0778805e === 'function') {
-    await nuxt_plugin_axios_0778805e(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_elementui_d905880e === 'function') {
-    await nuxt_plugin_elementui_d905880e(app.context, inject)
-  }
+  if (typeof nuxt_plugin_axios_c793e898 === 'function') await nuxt_plugin_axios_c793e898(app.context, inject)
+  if (typeof nuxt_plugin_elementui_d905880e === 'function') await nuxt_plugin_elementui_d905880e(app.context, inject)
 
   // If server-side, wait for async component to be resolved first
   if (process.server && ssrContext && ssrContext.url) {

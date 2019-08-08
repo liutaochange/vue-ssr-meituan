@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import fetch from 'unfetch'
 import middleware from './middleware.js'
 import {
   applyAsyncData,
@@ -18,16 +17,10 @@ import {
 } from './utils.js'
 import { createApp, NuxtError } from './index.js'
 import NuxtLink from './components/nuxt-link.client.js' // should be included after ./index.js
-import consola from 'consola'
-
-consola.wrapConsole()
-console.log = console.__log
 
 // Component: <NuxtLink>
 Vue.component(NuxtLink.name, NuxtLink)
 Vue.component('NLink', NuxtLink)
-
-if (!global.fetch) { global.fetch = fetch }
 
 // Global shared references
 let _lastPaths = []
@@ -39,14 +32,6 @@ let store
 const NUXT = window.__NUXT__ || {}
 
 Object.assign(Vue.config, {"silent":false,"performance":true})
-
-const logs = NUXT.logs || []
-if (logs.length > 0) {
-  console.group("%c🚀 Nuxt SSR Logs", 'font-size: 110%')
-  logs.forEach(logObj => consola[logObj.type](logObj))
-  delete NUXT.logs
-  console.groupEnd()
-}
 
 // Setup global Vue error handler
 if (!Vue.config.$nuxt) {
@@ -89,7 +74,12 @@ Vue.config.$nuxt.$nuxt = true
 const errorHandler = Vue.config.errorHandler || console.error
 
 // Create and mount App
-createApp().then(mountApp).catch(errorHandler)
+createApp()
+  .then(mountApp)
+  .catch((err) => {
+    err.message = '[nuxt] Error while mounting app: ' + err.message
+    errorHandler(err)
+  })
 
 function componentOption(component, key, ...args) {
   if (!component || !component.options || !component.options[key]) {
@@ -126,7 +116,7 @@ function mapTransitions(Components, to, from) {
 
 async function loadAsyncComponents(to, from, next) {
   // Check if route path changed (this._pathChanged), only if the page is not an error (for validate())
-  this._pathChanged = Boolean(app.nuxt.err) || from.path !== to.path
+  this._pathChanged = !!app.nuxt.err || from.path !== to.path
   this._queryChanged = JSON.stringify(to.query) !== JSON.stringify(from.query)
   this._diffQuery = (this._queryChanged ? getQueryDiff(to.query, from.query) : [])
 
@@ -161,7 +151,7 @@ async function loadAsyncComponents(to, from, next) {
 
     // Handle chunk loading errors
     // This may be due to a new deployment or a network problem
-    if (/^Loading( CSS)? chunk (\d)+ failed\./.test(message)) {
+    if (/^Loading chunk (\d)+ failed\./.test(message)) {
       window.location.reload(true /* skip cache */)
       return // prevent error page blinking for user
     }
@@ -261,7 +251,7 @@ async function render(to, from, next) {
     next: _next.bind(this)
   })
   this._dateLastError = app.nuxt.dateErr
-  this._hadError = Boolean(app.nuxt.err)
+  this._hadError = !!app.nuxt.err
 
   // Get route's matched components
   const matches = []
@@ -370,7 +360,7 @@ async function render(to, from, next) {
         Component.options.asyncData &&
         typeof Component.options.asyncData === 'function'
       )
-      const hasFetch = Boolean(Component.options.fetch)
+      const hasFetch = !!Component.options.fetch
 
       const loadingIncrease = (hasAsyncData && hasFetch) ? 30 : 45
 
@@ -472,13 +462,13 @@ function showNextPage(to) {
 function fixPrepatch(to, ___) {
   if (this._pathChanged === false && this._queryChanged === false) return
 
-  const matches = []
-  const instances = getMatchedComponentsInstances(to, matches)
-  const Components = getMatchedComponents(to, matches)
-
   Vue.nextTick(() => {
+    const matches = []
+    const instances = getMatchedComponentsInstances(to, matches)
+    const Components = getMatchedComponents(to, matches)
+
     instances.forEach((instance, i) => {
-      if (!instance || instance._isDestroyed) return
+      if (!instance) return
       // if (
       //   !this._queryChanged &&
       //   to.matched[matches[i]].path.indexOf(':') === -1 &&
@@ -487,18 +477,12 @@ function fixPrepatch(to, ___) {
       if (
         instance.constructor._dataRefresh &&
         Components[i] === instance.constructor &&
-        instance.$vnode.data.keepAlive !== true &&
         typeof instance.constructor.options.data === 'function'
       ) {
         const newData = instance.constructor.options.data.call(instance)
         for (const key in newData) {
           Vue.set(instance.$data, key, newData[key])
         }
-
-        // Ensure to trigger scroll event after calling scrollBehavior
-        window.$nuxt.$nextTick(() => {
-          window.$nuxt.$emit('triggerScroll')
-        })
       }
     })
     showNextPage.call(this, to)
@@ -531,7 +515,7 @@ const noopFetch = () => {}
 // Special hot reload with asyncData(context)
 function getNuxtChildComponents($parent, $components = []) {
   $parent.$children.forEach(($child) => {
-    if ($child.$vnode && $child.$vnode.data.nuxtChild && !$components.find(c =>(c.$options.__file === $child.$options.__file))) {
+    if ($child.$vnode.data.nuxtChild && !$components.find(c =>(c.$options.__file === $child.$options.__file))) {
       $components.push($child)
     }
     if ($child.$children && $child.$children.length) {
@@ -644,10 +628,6 @@ async function mountApp(__app) {
   const mount = () => {
     _app.$mount('#__nuxt')
 
-    // Add afterEach router hooks
-    router.afterEach(normalizeComponents)
-    router.afterEach(fixPrepatch.bind(_app))
-
     // Listen for first Vue update
     Vue.nextTick(() => {
       // Call window.{{globals.readyCallback}} callbacks
@@ -669,9 +649,11 @@ async function mountApp(__app) {
   _app.$loading = {} // To avoid error while _app.$nuxt does not exist
   if (NUXT.error) _app.error(NUXT.error)
 
-  // Add beforeEach router hooks
+  // Add router hooks
   router.beforeEach(loadAsyncComponents.bind(_app))
   router.beforeEach(render.bind(_app))
+  router.afterEach(normalizeComponents)
+  router.afterEach(fixPrepatch.bind(_app))
 
   // If page already is server rendered
   if (NUXT.serverRendered) {
@@ -680,30 +662,20 @@ async function mountApp(__app) {
   }
 
   // First render on client-side
-  const clientFirstMount = () => {
-    normalizeComponents(router.currentRoute, router.currentRoute)
-    showNextPage.call(_app, router.currentRoute)
-    // Don't call fixPrepatch.call(_app, router.currentRoute, router.currentRoute) since it's first render
-    mount()
-  }
-
   render.call(_app, router.currentRoute, router.currentRoute, (path) => {
     // If not redirected
     if (!path) {
-      clientFirstMount()
+      normalizeComponents(router.currentRoute, router.currentRoute)
+      showNextPage.call(_app, router.currentRoute)
+      // Don't call fixPrepatch.call(_app, router.currentRoute, router.currentRoute) since it's first render
+      mount()
       return
     }
 
-    // Add a one-time afterEach hook to
-    // mount the app wait for redirect and route gets resolved
-    const unregisterHook = router.afterEach((to, from) => {
-      unregisterHook()
-      clientFirstMount()
-    })
-
-    // Push the path and let route to be resolved
-    router.push(path, undefined, (err) => {
-      if (err) errorHandler(err)
+    // Push the path and then mount app
+    router.push(path, () => mount(), (err) => {
+      if (!err) return mount()
+      errorHandler(err)
     })
   })
 }

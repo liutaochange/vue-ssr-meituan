@@ -1,7 +1,6 @@
 import Router from 'koa-router'
 import axios from './utils/axios'
-import sign from './utils/sign'
-
+const sign = 'abcd'
 let router = new Router({prefix: '/search'})
 
 router.get('/top', async (ctx) => {
