@@ -227,31 +227,38 @@
         <div class="footer-column">
           <dl>
             <dt>消费者服务热线</dt>
-            <dd>外卖消费者：
+            <dd>
+              外卖消费者：
               <a rel="nofollow" href="tel:10109777" target="_blank">10109777</a>
             </dd>
-            <dd>猫眼消费者：
+            <dd>
+              猫眼消费者：
               <a rel="nofollow" href="tel:10105335" target="_blank">10105335</a>
             </dd>
-            <dd>其他消费者：
+            <dd>
+              其他消费者：
               <a rel="nofollow" href="tel:10107888" target="_blank">10107888</a>
             </dd>
           </dl>
           <dl>
             <dt>商家服务热线</dt>
-            <dd>外卖&amp;餐饮商家：
+            <dd>
+              外卖&amp;餐饮商家：
               <a rel="nofollow" href="tel:10105557" target="_blank">10105557</a>
             </dd>
-            <dd>休闲娱乐、丽人、ktv、教育、结婚、亲子、家装等商家：
+            <dd>
+              休闲娱乐、丽人、ktv、教育、结婚、亲子、家装等商家：
               <a rel="nofollow" href="tel:10100107" target="_blank">10100107</a>
             </dd>
           </dl>
           <dl>
             <dt>投诉举报热线</dt>
-            <dd>违法和不良信息举报电话：
+            <dd>
+              违法和不良信息举报电话：
               <a rel="nofollow" href="tel:4006018900" target="_blank">4006018900</a>
             </dd>
-            <dd>举报邮箱：
+            <dd>
+              举报邮箱：
               <a
                 rel="nofollow"
                 href="mailto:tousujubao@meituan.com"
@@ -272,7 +279,8 @@
       </div>
       <div class="footer-copyright clearfix">
         <div class="footer-copyright-left">
-          <p>©网团购 meituan.com
+          <p>
+            ©网团购 meituan.com
             <a
               href="http://www.beianbeian.com/beianxinxi/283f39a9-4c00-427a-97ef-3c7a9e1e0af1.html"
             >京ICP证070791号</a>
