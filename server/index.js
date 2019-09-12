@@ -3,6 +3,7 @@ import consola from 'consola'
 import bodyParser from 'koa-bodyparser'
 import { Nuxt, Builder } from 'nuxt'
 import search from './interface/search'
+import geo from './interface/geo'
 const app = new Koa()
 
 app.use(bodyParser({
@@ -30,6 +31,7 @@ async function start() {
     await nuxt.ready()
   }
   app.use(search.routes()).use(search.allowedMethods())
+  app.use(geo.routes()).use(geo.allowedMethods())
   app.use(ctx => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling
